@@ -1,22 +1,26 @@
 #include <iostream>
 #include "seqlist.h"
 using namespace std;
-SeqList::SeqList(int size)
+template <typename T>
+SeqList<T>::SeqList(int size)
 {
     this->_size = size;
     this->_length = 0;
-    this->data = new int[_size];
-}
-SeqList::~SeqList()
+    this->data = new T[_size];
+};
+template <typename T>
+SeqList<T>::~SeqList()
 {
     delete[] data;
     data = NULL;
-}
-void SeqList::ClearList()
+};
+template <typename T>
+void SeqList<T>::ClearList()
 {
     this->_length = 0;
-}
-bool SeqList::ListEmpty()
+};
+template <typename T>
+bool SeqList<T>::ListEmpty()
 {
     if (this->_length == 0)
     {
@@ -26,12 +30,14 @@ bool SeqList::ListEmpty()
     {
         return false;
     }
-}
-int SeqList::ListLength()
+};
+template <typename T>
+int SeqList<T>::ListLength()
 {
     return this->_length;
-}
-bool SeqList::GetElem(int i, int *e)
+};
+template <typename T>
+bool SeqList<T>::GetElem(int i, T *e)
 {
     if (i < 0 || i > this->_length)
     {
@@ -42,8 +48,9 @@ bool SeqList::GetElem(int i, int *e)
         *e = data[i - 1];
         return true;
     }
-}
-int SeqList::LocateElem(int *e)
+};
+template <typename T>
+int SeqList<T>::LocateElem(T *e)
 {
     for (int i = 0; i < this->_length; i++)
     {
@@ -51,8 +58,9 @@ int SeqList::LocateElem(int *e)
             return i;
     }
     return -1;
-}
-bool SeqList::PriorElem(int *cur, int *pre)
+};
+template <typename T>
+bool SeqList<T>::PriorElem(T *cur, T *pre)
 {
     int temp = LocateElem(cur);
     if (-1 == temp)
@@ -71,8 +79,9 @@ bool SeqList::PriorElem(int *cur, int *pre)
             return true;
         }
     }
-}
-bool SeqList::NextElem(int *cur, int *next)
+};
+template <typename T>
+bool SeqList<T>::NextElem(T *cur, T *next)
 {
     int temp = LocateElem(cur);
     if (-1 == temp || temp == _length - 1)
@@ -84,15 +93,17 @@ bool SeqList::NextElem(int *cur, int *next)
         *next = data[temp + 1];
         return true;
     }
-}
-void SeqList::ListTraverse()
+};
+template <typename T>
+void SeqList<T>::ListTraverse()
 {
     for (int i = 0; i < _length; i++)
     {
         cout << data[i] << endl;
     }
-}
-bool SeqList::ListInsert(int i, int *e)
+};
+template <typename T>
+bool SeqList<T>::ListInsert(int i, T *e)
 {
     if (i < 1 || i > _size)
     {
@@ -106,8 +117,9 @@ bool SeqList::ListInsert(int i, int *e)
     data[k + 1] = *e;
     _length++;
     return true;
-}
-bool SeqList::ListDelete(int i, int *e)
+};
+template <typename T>
+bool SeqList<T>::ListDelete(int i, T *e)
 {
     if (i < 1 || i > _length)
     {
@@ -128,7 +140,7 @@ bool SeqList::ListDelete(int i, int *e)
         _length--;
         return true;
     }
-}
+};
 
 int main(void)
 {
