@@ -1,0 +1,69 @@
+#include <iostream>
+
+using namespace std;
+class Node
+{
+public:
+    int data;
+    Node* next;
+};
+
+class CircList
+{
+public:
+    CircList()
+    {
+        head = new Node;
+        head->data = 0;
+        head->next = head;
+    }
+    ~CircList()
+    {
+        delete head;
+    }
+    void CreatCircList(int n)
+    {
+        Node* pnew = NULL;
+        Node* ptemp = head;
+        int i=1;
+        while (n-- > 0)
+        {
+            pnew = new Node;
+            pnew->data=i++;
+            pnew->next = head;
+            ptemp->next = pnew;
+            ptemp = pnew;
+        }
+    }            //´´½¨Ñ­»·Á´±í
+    Node *head;
+};
+
+int main(void)
+{
+    CircList c;
+    int n,k,i,j;
+    cin>>n>>k;
+    c.CreatCircList(n);
+    Node* p = c.head;
+	Node* ptemp=NULL;
+	for (i = 0; i < n - 1; i++)
+	{
+		for (j = 1; j <= k; j++)
+		{
+
+			ptemp = p;
+			p = p->next;
+			if (p == c.head)
+			{
+				ptemp = p;
+				p = p->next;
+			}
+		}
+		ptemp->next = p->next;
+		cout << p->data << " ";
+		delete p;
+		p = ptemp;
+	}
+	cout<<c.head->next->data;
+    return 0;
+}
