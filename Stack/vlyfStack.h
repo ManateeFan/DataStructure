@@ -24,8 +24,13 @@ public:
     {
         return data[size - 1];
     }
+	
+    const T& top() const
+    {
+        return data[size - 1];
+    }
 
-    size_t size()
+    size_t size() const
     {
         return size;
     }
@@ -33,12 +38,6 @@ public:
     bool empty()
     {
         return size == 0;
-    }
-
-    void print()
-    {
-        for (auto &i : data)
-            cout << i << " ";
     }
 	
     void chekcCapacity()
