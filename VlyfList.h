@@ -1,3 +1,4 @@
+#pragma once
 //带头尾结点的单链表
 template<class T>
 class VlyfList;	
