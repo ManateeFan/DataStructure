@@ -1,5 +1,4 @@
-#ifndef _VLYFDEQUE_H
-#define _VLYFDEQUE_H
+#pragma once
 
 template <typename T>
 class vlyfStack
@@ -58,5 +57,3 @@ private:
     size_t capacity; //容量
     T *data;         //数据指针
 }
-
-#endif
