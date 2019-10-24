@@ -1,9 +1,6 @@
-#include<iostream>
-
-using namespace std;
-
+//带头尾结点的单链表
 template<class T>
-class LinkList;
+class VlyfList;	
 
 template<class T>
 class Node
@@ -11,11 +8,8 @@ class Node
 	T data;
 	Node* next;
 public:
-	Node() = default;
-	Node(T d) :data(d)
-	{
-		next = nullptr;
-	}
+	Node():next(nullptr) {}
+	Node(T d) :next(nullptr),data(d){}
 
 	friend LinkList<T>;
 };
@@ -24,53 +18,51 @@ template<class T>
 class LinkList
 {
 	Node<T>* head;
+	Node<T>* tail;
 	int length;
 public:
-	LinkList() 
+	LinkList()
 	{
-		head = nullptr;
+		head = new Node<T>;
+		tail = new Node<T>;
+		head->next = tail;
 		length = 0;
 	}
-	~LinkList() = default;
+	~LinkList()
+	{
+		clear();
+	}
 
 	bool isEmpty()
 	{
 		return length == 0;
 	}
 
-	int getLength()
+	unsigned getLength()
 	{
 		return length;
 	}
-
-	void insertFront(T d)
+	//头插
+	void insertFront(const T& d)
 	{
 		Node<T>* newnode = new Node<T>(d);
-		if (isEmpty())
-		{
-			head->next = newnode;
-		}
-		else
-		{
-			newnode->next = head->next;
-			head->next = newnode;
-		}
+		newnode->next = head->next;
+		head->next = newnode;
 		length++;
 	}
-
-	void insertRear(T d)
+	//尾插
+	void insertRear(const T& d)
 	{
 		Node<T>* newnode = new Node<T>(d);
 		Node<T>* p = head;
-
-		while (p->next != nullptr)
+		while (p->next != tail)
 			p = p->next;
-
 		p->next = newnode;
+		newnode->next = tail;
 		length++;
 	}
-
-	void insert(const int& i, T d)	//insert position i >0
+	//按位置插入
+	void insert(const int& i, const T& d)	//insert position i >0
 	{
 		if (i > length || i < 1) return;
 		if (i == 1)
@@ -88,7 +80,7 @@ public:
 		}
 		length++;
 	}
-
+	//返回指定位置结点的数据
 	T& getNode(const int& i)
 	{
 		Node<T>* p = head;
@@ -101,7 +93,7 @@ public:
 		}
 		return p->data;
 	}
-
+	//删除结点中值为d的结点
 	void deleteData(const T& d)
 	{
 		Node<T>* p = head, * del = nullptr;
@@ -113,7 +105,7 @@ public:
 		length--;
 		delete del;
 	}
-
+	//按位置删除结点
 	void deleteIndex(const int& i)
 	{
 		if (i<1 || i>length) return;
@@ -131,11 +123,11 @@ public:
 		length--;
 		delete del;
 	}
-
+	//清空链表
 	void clear()
 	{
 		Node<T>* p = head->next, * del = head->next;
-		while (del != nullptr)
+		while (del != tail)
 		{
 			p = p->next;
 			delete del;
@@ -144,14 +136,3 @@ public:
 		length = 0;
 	}
 };
-
-int main() {
-	LinkList<int> L;
-	L.getLength();
-	L.insertFront(3);
-	L.insertFront(4);
-	L.insertRear(2);
-	L.getLength();
-	L.insert(2, 3);
-	return 0;
-}
