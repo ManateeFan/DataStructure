@@ -28,13 +28,12 @@ namespace vlyf
 		void LowCase(unsigned first, unsigned last);
 
 		// stream operators
-		friend std::ostream& operator<<(std::ostream&, const string&);
-		friend std::istream& operator>>(std::istream&, const string&);
+		friend std::ostream& operator<<(std::ostream& os, const string& str);
+		friend std::istream& operator>>(std::istream& is, string& str);
 
 		// access operators
-		const char& operator[](unsigned i) const;
+		const char& operator[](unsigned i) const;	//const string 
 		char& operator[](unsigned i);
-		char& at(unsigned i);
 
 		// asignment operators
 		string& operator=(const char* s);
@@ -42,16 +41,14 @@ namespace vlyf
 		string& operator+=(const string& str);
 
 		// string concatenation
-		friend string operator+(const string& str1, const string& str2);
-		friend string operator+(const string& str, const char* s);
-		friend string operator+(const char* s, const string& str);
+		friend string operator+(const string& lhs, const string& rhs);
+		friend string operator+(const string& lhs, const char* rhs);
+		friend string operator+(const char* lhs, const string& rhs);
 
 		// logical opreators
-		friend bool operator==(const string& str1, const string& str2);
-		friend bool operator!=(const string& str1, const string& str2);
-		friend bool operator<(const string& str1, const string& str2);
-		friend bool operator>(const string& str1, const string& str2);
-		friend bool operator<=(const string& str1, const string& str2);
-		friend bool operator>=(const string& str1, const string& str2);
+		friend bool operator==(const string& lhs, const string& rhs);
+		friend bool operator!=(const string& lhs, const string& rhs);
+		friend bool operator<(const string& lhs, const string& rhs);
+		friend bool operator>(const string& lhs, const string& rhs);
 	};
 }

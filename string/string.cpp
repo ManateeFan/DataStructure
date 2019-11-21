@@ -1,41 +1,60 @@
 #include "string.h"
 
-inline
-vlyf::string::string() : data(new char('\0')), length(0) {}
+using namespace vlyf;
 
 inline
-vlyf::string::string(const char& ch):length(1)
+vlyf::string::string()
 {
-	data = new char[2];
-	data[0] = ch;
-	data[1] = '\0';
+	length = 0;
+	data = new char[0];
 }
 
 inline
-vlyf::string::string(const string& str)
+string::string(const char* str)
+{
+	if (str)
+	{
+		unsigned n = 0;
+		while (str[n] != '\0') n++;
+		data = new char[n];
+		length = n;
+		for (unsigned i = 0; i < n; i++)
+		{
+			data[i] = str[i];
+		}
+	}
+	else
+	{
+		length = 0;
+		data = new char[0];
+	}
+}
+
+inline
+string::string(const string& str)
 {
 	unsigned len = str.Length();
-	data = new char[len + 1];
+	length = len;
+	data = new char[len];
 	for (unsigned i = 0; i < len; i++)
 	{
 		data[i] = str[i];
 	}
-	data[len] = '\0';
 }
 
 inline
-vlyf::string::~string()
+string::~string()
 {
 	delete[]data;
 }
 
 inline
-unsigned vlyf::string::Length() const
+unsigned string::Length() const
 {
-	return Length();
+	return length;
 }
 
-int vlyf::string::Index(char c) const
+int string::Index(char c) const
 {
 	for (unsigned i = 0; i < Length(); i++)
 	{
@@ -45,7 +64,7 @@ int vlyf::string::Index(char c) const
 }
 
 inline
-void vlyf::string::UpCase(unsigned first, unsigned last)
+void string::UpCase(unsigned first, unsigned last)
 {
 	while (first++ < last)
 	{
@@ -55,7 +74,7 @@ void vlyf::string::UpCase(unsigned first, unsigned last)
 }
 
 inline
-void vlyf::string::LowCase(unsigned first, unsigned last)
+void string::LowCase(unsigned first, unsigned last)
 {
 	while (first++ < last)
 	{
@@ -64,56 +83,43 @@ void vlyf::string::LowCase(unsigned first, unsigned last)
 	}
 }
 
-inline
+
 const char& vlyf::string::operator[](unsigned i) const
 {
-	if (i < Length()) return data[i];
-	else return data[0];
+	return data[i];
 }
 
-inline
 char& vlyf::string::operator[](unsigned i)
 {
-	if (i < Length()) return data[i];
-	else return data[0];
+	return data[i];
 }
 
-inline
-char& vlyf::string::at(unsigned i)
-{
-	if (i < Length()) return data[i];
-	else return data[0];
-}
-
-inline
 string& vlyf::string::operator=(const char* s)
 {
-	if (s == *this) return *this;
-	delete[]data;
-	unsigned len, i;
-	for (i = 0; s[i] != '\0'; i++)
-	{
-	}
-	len = i;
-	data = new char[len];
-	for (unsigned j = 0; j < Length(); j++)
-		data[i] = s[i];
+	delete[] data;
+	unsigned n = 0;
+	while (s[n] != '\0')
+		n++;
+	length = n;
 	return *this;
 }
 
 inline
 string& vlyf::string::operator=(const string& str)
 {
-	if (&str == this) return *this;
+	if (this == &str) return *this;
 	delete[]data;
-	for (unsigned i = 0; i < str.Length(); i++)
+	unsigned len = str.Length();
+	data = new char[len];
+	for (unsigned i = 0; i < len; i++)
 		data[i] = str[i];
 	return *this;
 }
 
-string& vlyf::string::operator+=(const string& str)
+inline
+string& string::operator+=(const string& str)
 {
-	unsigned len = Length() + str.Length();
+	unsigned len = length + str.Length();
 	char* ss = new char[len];
 	for (unsigned i = 0; i < Length(); i++)
 		ss[i] = data[i];
@@ -125,7 +131,9 @@ string& vlyf::string::operator+=(const string& str)
 }
 
 
-std::ostream& vlyf::operator<<(std::ostream& os, string str) 
+
+
+std::ostream& vlyf::operator<<(std::ostream& os, const string& str)
 {
 	if (str.Length() > 0)
 	{
@@ -139,11 +147,69 @@ std::ostream& vlyf::operator<<(std::ostream& os, string str)
 	return os;
 }
 
-
-std::istream& vlyf::operator>>(std::istream& is, const string& str)
+std::istream& vlyf::operator>>(std::istream& is,string& str)
 {
 	char* ss = new char[1000];
 	is >> ss;
 	str = string(ss);
 	return is;
+}
+
+string vlyf::operator+(const string& lhs, const string& rhs)
+{
+	return string(lhs) += rhs;
+}
+
+string vlyf::operator+(const string& lhs, const char* rhs)
+{
+	return string(lhs) += string(rhs);
+}
+
+string vlyf::operator+(const char* lhs, const string& rhs)
+{
+	return string(lhs) += string(rhs);
+}
+
+
+bool vlyf::operator==(const string& lhs, const string& rhs)
+{
+	if (lhs.Length() != rhs.Length())
+		return false;
+	unsigned n = 0;
+	unsigned len = lhs.Length();
+	while (lhs[n] == rhs[n] && len != n)
+		n++;
+	return n == len;
+}
+
+bool vlyf::operator!=(const string& lhs, const string& rhs)
+{
+	if (lhs.Length() != rhs.Length())
+		return true;
+	unsigned n = 0;
+	unsigned len = lhs.Length();
+	while (lhs[n] == rhs[n] && len != n)
+		n++;
+	return n != len;
+}
+
+bool vlyf::operator<(const string& lhs, const string& rhs)
+{
+	unsigned min = (lhs.Length() < rhs.Length()) ? lhs.Length() : rhs.Length();
+	unsigned n = 0;
+	while (lhs[n] == rhs[n] && n != min)
+		n++;
+	if (n == min) return lhs.Length() < rhs.Length();
+	else
+	{
+		if (lhs[n] < rhs[n])
+			return lhs.Length() < rhs.Length();
+		else
+			return lhs.Length() > rhs.Length();
+	}
+}
+
+bool vlyf::operator>(const string& lhs, const string& rhs)
+{
+	return lhs < rhs;
 }
