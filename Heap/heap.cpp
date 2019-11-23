@@ -7,7 +7,8 @@ template<typename T>
 class MaxPQ
 {
 private:
-	// 存于pq[1...N]，pq[0]未使用	int N;	
+	// 存于pq[1...N]，pq[0]未使用	
+	int N;	
 	int capacity;
 	// 基于堆的完全二叉树
 	T* pq;
