@@ -1,4 +1,4 @@
-//»ùÓÚÍêÈ«¶ş²æÊ÷µÄÓÅÏÈ¶ÓÁĞ
+//åŸºäºå®Œå…¨äºŒå‰æ ‘çš„ä¼˜å…ˆé˜Ÿåˆ—ï¼ˆæœ€å¤§å †ï¼‰
 #include<iostream>
 
 using namespace std;
@@ -7,10 +7,9 @@ template<typename T>
 class MaxPQ
 {
 private:
-	// ´æÓÚpq[1...N]£¬pq[0]Î´Ê¹ÓÃ
-	int N;	
+	// å­˜äºpq[1...N]ï¼Œpq[0]æœªä½¿ç”¨	int N;	
 	int capacity;
-	// »ùÓÚ¶ÑµÄÍêÈ«¶ş²æÊ÷
+	// åŸºäºå †çš„å®Œå…¨äºŒå‰æ ‘
 	T* pq;
 public:
 	MaxPQ(int maxN) :N(0), capacity(maxN), pq(new T[maxN + 1]) {}
@@ -20,13 +19,13 @@ public:
 		{
 			pq[i + 1] = data[i];
 		}
-		// ÉÏ¸¡
+		// è°ƒæ•´ä½ç½®
 		for (size_t i = N; i > 1; i--)
 			Swim(i);
 	}
 	~MaxPQ() { delete[]pq; }
 
-	// ²åÈëÔªËØµ½×îºóÒ»¸öÎ»ÖÃ£¬²¢ÉÏ¸¡
+	// æ’å…¥å…ƒç´ åˆ°æœ€åä¸€ä¸ªä½ç½®ï¼Œå¹¶ä¸Šæµ®
 	void Insert(const T& x)
 	{
 		if (!Full())
@@ -36,14 +35,14 @@ public:
 		}
 	}
 
-	// ·µ»Ø×î´óÔªËØ
+	// è¿”å›æœ€å¤§å…ƒç´ 
 	T& GetMax()
 	{
 		if(!Empty())
 			return pq[1];
 	}
 
-	// É¾³ı²¢·µ»Ø×î´óÔªËØ
+	// åˆ é™¤å¹¶è¿”å›æœ€å¤§å…ƒç´ 
 	T DelMax()
 	{
 		if (!Empty())
@@ -61,11 +60,11 @@ public:
 	// full
 	bool Full() { return N == capacity; }
 
-	//ÔªËØ¸öÊı
+	//å…ƒç´ ä¸ªæ•°
 	int Size() { return N; }
 
 private:
-	// ÉÏ¸¡º¯Êı
+	// ä¸Šæµ®å‡½æ•°
 	void Swim(size_t k)
 	{
 		while (pq[k / 2] < pq[k] && k > 1)
@@ -75,12 +74,13 @@ private:
 		}
 	}
 
-	// ÏÂ³Áº¯Êı
+	/* ä¸å­å¥³èŠ‚ç‚¹ä¸­è¾ƒå¤§çš„äº’æ¢ */
+	// ä¸‹æ²‰å‡½æ•°
 	void Sink(size_t k)
 	{
 		while (N >= k * 2)
 		{
-			//×ó×ÓÅ®ÏÂ±ê
+			//å·¦å­å¥³ä¸‹æ ‡
 			size_t j = k * 2;
 			if (j < N && pq[j] < pq[j + 1]) j++;
 			if (pq[k] >= pq[j]) break;
