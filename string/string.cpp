@@ -96,11 +96,15 @@ char& vlyf::string::operator[](unsigned i)
 
 string& vlyf::string::operator=(const char* s)
 {
-	delete[] data;
+	char* temp = data;					//保存原本数据，确保异常安全性
 	unsigned n = 0;
 	while (s[n] != '\0')
 		n++;
 	length = n;
+	data = new char[n];
+	for (unsigned i = 0; i < n; i++)
+		data[i] = s[i];
+	delete[] temp;
 	return *this;
 }
 
@@ -108,11 +112,14 @@ inline
 string& vlyf::string::operator=(const string& str)
 {
 	if (this == &str) return *this;
-	delete[]data;
+	char* temp = str.data;				//保存原本数据，确保异常安全性
+
 	unsigned len = str.Length();
 	data = new char[len];
 	for (unsigned i = 0; i < len; i++)
 		data[i] = str[i];
+	length = len;
+	delete[] temp;
 	return *this;
 }
 
@@ -127,6 +134,7 @@ string& string::operator+=(const string& str)
 		ss[i + length] = str[i];
 	delete[]data;
 	data = ss;
+	length = len;
 	return *this;
 }
 
@@ -212,4 +220,39 @@ bool vlyf::operator<(const string& lhs, const string& rhs)
 bool vlyf::operator>(const string& lhs, const string& rhs)
 {
 	return lhs < rhs;
+}
+
+int main()
+{
+	string s1 = "123";
+	std::cout << "s1:" << s1 << "		length: " << s1.Length() << std::endl;
+
+	string s2("456");
+	std::cout << "s2:" << s2 << "		length: " << s2.Length() << std::endl;
+
+	string s3(s1);
+	std::cout << "s3:" << s3 << "		length: " << s3.Length() << std::endl;
+
+	string s4 = s3;
+	std::cout << "s4:" << s4 << "		length: " << s4.Length() << std::endl;
+
+	string s5(s1);
+	s5 += s2;
+	std::cout << "s5:" << s5 << "		length: " << s5.Length() << std::endl;
+
+	string s6(s5);
+	std::cout << "s6:" << s6 << "		length: " << s6.Length() << std::endl;
+
+	if (s5 == s6) std::cout << "s5 == s6:		true" << std::endl;
+
+	string s7 = s1 + "456";
+	std::cout << "s7:" << s7 << "		length: " << s7.Length() << std::endl;
+
+	string s8 = "456" + s1;
+	std::cout << "s8:" << s8 << "		length: " << s8.Length() << std::endl;
+
+	string s9 = s7 + s8;
+	std::cout << "s9:" << s9 << "		length: " << s9.Length() << std::endl;
+
+	return 0;
 }
