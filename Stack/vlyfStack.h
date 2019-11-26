@@ -1,59 +1,64 @@
 #pragma once
 
-template <typename T>
-class vlyfStack
+#include <iostream>
+#include <stdexcept>
+
+namespace vlyf
 {
-public:
-    vlyfStack(int _capacity = 10) : size(0), capacity(_capacity), data(new T[capacity]) {}
-    ~vlyfStack() { delete[] data; }
-
-    void push(const T& x)
+    template <typename T, int MAXSIZE>
+    class Stack
     {
-        checkCapacity();
-        data[size++] = x;
+    private:
+        T elems[MAXSIZE];
+        int numElems;
+
+    public:
+        vlyfStack() : numElems(0) {}
+        void push(T const &);
+        void pop();
+        T top() const;
+        bool empty() const
+        {
+            return numElems == 0;
+        }
+        int size() const
+        {
+            return numElems;
+        }
+    };
+
+    template <T, MAXSIZE>
+    inline void Stack<T, MAXSIZE>::push(T const &elem)
+    {
+        if (numElems == MAXSIZE)
+            throw std::out_of_range("Exception: Stack<>::push(): stack is full");
+        data[numElems++] = elem;
     }
 
-    T& pop()
+    template <T, MAXSIZE>
+    inline void Stack<T, MAXSIZE>::pop()
     {
-
-        return data[--size];
+        if (numElems == 0)
+            throw std::out_of_range("Exception: Stack<>::push(): stack is empty");
+        numElems--;
     }
 
-    T& top()
+    template <T, MAXSIZE>
+    inline T Stack<T, MAXSIZE>::top()
     {
+        if (numElems == 0)
+            throw std::out_of_range("Exception: Stack<>::push(): stack is empty");
         return data[size - 1];
     }
-	
-    const T& top() const
-    {
-        return data[size - 1];
-    }
 
-    size_t size() const
+    template <T, MAXSIZE>
+    inline int Stack<T, MAXSIZE>::size() const
     {
-        return size;
+        return numElems;
     }
 
     bool empty()
     {
-        return size == 0;
+        return numElems == 0;
     }
-	
-    void chekcCapacity()
-    {
-        if (size == capacity)
-        {
-            capacity *= 2;
-            T* newData = new T[capacity];
-            for (int i = 0; i < size; i++)
-                newData[i] = data[i];
-            delete[] data;
-            data = newData;
-        }
-    }
-
-private:
-    size_t size;     //数据个数
-    size_t capacity; //容量
-    T *data;         //数据指针
-}
+} // namespace vlyf
