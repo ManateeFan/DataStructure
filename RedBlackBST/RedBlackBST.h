@@ -1,4 +1,5 @@
 #pragma once
+#include <stdexcept>
 
 enum class Color
 {
@@ -34,10 +35,33 @@ public:
 		root->color = Color::BLACK;
 	}
 
+	int size() const
+	{
+		if (root)
+			return size(root);
+		else
+			return 0;
+	}
+
+	// 根据排名，获得键值
+	Key select(int const& i) const
+	{
+		return select(root, i)->key;
+	}
+	// 返回小于该键值的节点个数
+	int rank(Key const& k) 
+	{
+		return rank(root, k);
+	}
+
+	Value get(Key const& k) const
+	{
+		return get(root, k);
+	}
 
 private:
 	// 判断节点颜色是否为红色
-	bool isRed(Node const* const& h)
+	bool isRed(Node const* const& h) const
 	{
 		if (!h)
 			return false;
@@ -72,7 +96,7 @@ private:
 	}
 
 	// 以该节点为根的树的大小
-	int size(Node* h)
+	int size(Node* h) const
 	{
 		if (!h) return 0;
 		return h->N;
@@ -91,11 +115,11 @@ private:
 			return new Node(k, v);
 		if (k < h->key)
 		{
-			put(h->left, k, v);
+			h->left = put(h->left, k, v);
 		}
 		else if (k > h->key)
 		{
-			put(h->right, k, v);
+			h->right = put(h->right, k, v);
 		}
 		else
 		{
@@ -120,6 +144,41 @@ private:
 		return h;
 	}
 
+	Node* select(Node* node, int i) const
+	{
+		if (!node) throw std::out_of_range("root is null");
 
+		if (i > size(node))
+			return select(node->right, i);
+		else if (i < size(node))
+			return select(node->left, i);
+		else
+			return node;
+	}
+
+	int rank(Node* const& node, Key const& k) 
+	{
+		if (!node) return 0;
+		if (k < node->key)
+			return rank(node->left, k);
+		else if (k > node->key)
+			return rank(node->right, k);
+		else
+			return size(node);
+	}
+
+	Value get(Node* node, Key const& k) const
+	{
+		if (!node) throw std::out_of_range("root is null");
+		else
+		{
+			if (k < node->key)
+				get(node->left, k);
+			else if (k > node->key)
+				get(node->right, k);
+			else
+				return node->value;
+		}
+	}
 };
 
