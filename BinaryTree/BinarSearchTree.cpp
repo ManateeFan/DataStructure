@@ -79,6 +79,64 @@ public:
     {
         cout << root->data << " ";
     }
+
+    void Delete(BinarySearchTree* root, int i)
+    {
+        if(!root) return;
+        BinarySearchTree* p;
+        if(i < root->data)
+        {
+            root = root->left;
+            while(i != root->data)
+            {    
+                p = root;
+                root = root->left;
+            }
+            if(root->right == nullptr)
+            {
+                p->left = root->left;
+                delete root;
+            }
+            else
+            {
+                root = root->right;
+                while(root->left)
+                    root = root->left;
+                p->left = root;
+                root->left = p->left->left;
+                root->right = p->left->right;
+            }
+            
+        }
+        else if(i > root->data)
+        {
+            root = root->right;
+            while(i != root->data)
+            {    
+                p = root;
+                root = root->left;
+            }
+            if(root->right == nullptr)
+            {
+                p->left = root->left;
+                delete root;
+            }
+            else
+            {
+                root = root->right;
+                while(root->left)
+                    root = root->left;
+                p->left = root;
+                root->left = p->left->left;
+                root->right = p->left->right;
+            }
+        }
+        else
+        {
+            delete root;
+        }
+        
+    }
 };
 int main()
 {
