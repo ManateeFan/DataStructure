@@ -20,13 +20,13 @@ private:
 public:
 	LinkList() :head(nullptr) {};
 
-	// 查找第一个关键字为k的元素并返回指针
+	// 锟斤拷锟揭碉拷一锟斤拷锟截硷拷锟斤拷为k锟斤拷元锟截诧拷锟斤拷锟斤拷指锟斤拷
 	typename Node<T>::pointer Search(T const&) const;
 
-	// 将节点x插入LinkList前端
+	// 锟斤拷锟节碉拷x锟斤拷锟斤拷LinkList前锟斤拷
 	void Insert( typename Node<T>::pointer const& x);
 
-	// 删除节点x
+	// 删锟斤拷锟节碉拷x
 	void Delete(typename Node<T>::pointer const& x);
 };
 
@@ -65,4 +65,5 @@ void LinkList<T>::Delete(typename Node<T>::pointer const& x)
 		head->next = x->next;
 	if (!x->next)
 		x->next->prev = x->prev;
+	delete x;
 }
