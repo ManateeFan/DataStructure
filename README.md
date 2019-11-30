@@ -3,7 +3,7 @@
 ## 常见数据结构
 
 1. [Stack](https://github.com/vlyf/DataStructure/tree/master/Stack)
-2. [Deque](https://github.com/vlyf/DataStructure/tree/master/Deque)
+2. [Queue](https://github.com/vlyf/DataStructure/tree/master/Queue)
 3. [SeqList](https://github.com/vlyf/DataStructure/tree/master/SeqList)
 4. [CircList](https://github.com/vlyf/DataStructure/tree/master/CircList)
 5. [BinaryTree](https://github.com/vlyf/DataStructure/tree/master/BinaryTree)
