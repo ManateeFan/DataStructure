@@ -4,7 +4,7 @@
 
 1. [Stack](https://github.com/vlyf/DataStructure/tree/master/Stack)
 2. [Queue](https://github.com/vlyf/DataStructure/tree/master/Queue)
-3. [SeqList](https://github.com/vlyf/DataStructure/tree/master/SeqList)
+3. [LinkList](https://github.com/vlyf/DataStructure/tree/master/LinkList)
 4. [CircList](https://github.com/vlyf/DataStructure/tree/master/CircList)
 5. [BinaryTree](https://github.com/vlyf/DataStructure/tree/master/BinaryTree)
 6. [Heap](https://github.com/vlyf/DataStructure/tree/master/Heap)
