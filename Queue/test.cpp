@@ -12,7 +12,8 @@ int main()
 	queue.EnQueue(2);
 	queue.EnQueue(3);
 	queue.EnQueue(4);
-	cout << "Deque is full: " << queue.Full() << endl;
+	cout << "queue.Length: " << queue.Length() << endl;
+	cout << "Queue is full: " << queue.Full() << endl;
 	cout << "DeQueue: " << queue.DeQueue() << endl;
 	cout << "DeQueue: " << queue.DeQueue() << endl;
 	cout << "DeQueue: " << queue.DeQueue() << endl;
@@ -27,7 +28,8 @@ int main()
 	queue.EnQueue(6);
 	queue.EnQueue(7);
 	queue.EnQueue(8);
-	cout << "Deque is full: " << queue.Full() << endl;
+	cout << "queue.Length: " << queue.Length() << endl;
+	cout << "Queue is full: " << queue.Full() << endl;
 	cout << "DeQueue: " << queue.DeQueue() << endl;
 	cout << "DeQueue: " << queue.DeQueue() << endl;
 	cout << "DeQueue: " << queue.DeQueue() << endl;

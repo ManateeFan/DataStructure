@@ -23,6 +23,13 @@ public:
 	{
 		return (head == tail + 1) || (tail == MAXSIZE && head == 0);
 	}
+	int Length() const
+	{
+		if (head < tail)
+			return tail - head;
+		else
+			return MAXSIZE + 1 - (head - tail);
+	}
 };
 
 template<typename T, int MAXSIZE>
