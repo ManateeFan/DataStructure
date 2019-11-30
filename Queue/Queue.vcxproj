@@ -123,7 +123,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Deque.hpp" />
+    <ClInclude Include="Queue.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="test.cpp" />

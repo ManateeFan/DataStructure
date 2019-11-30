@@ -1,38 +1,38 @@
 #include <iostream>
-#include "Deque.hpp"
+#include "Queue.hpp"
 
 using namespace std;
 
 int main()
 {
-	Deque<int, 4> deque;
-	cout << "Deque is empty: " << deque.Empty() << endl;
-	cout << "EnDeque 1 2 3 4" << endl;
-	deque.EnDeque(1);
-	deque.EnDeque(2);
-	deque.EnDeque(3);
-	deque.EnDeque(4);
-	cout << "Deque is full: " << deque.Full() << endl;
-	cout << "DeDeque: " << deque.DeDeque() << endl;
-	cout << "DeDeque: " << deque.DeDeque() << endl;
-	cout << "DeDeque: " << deque.DeDeque() << endl;
-	cout << "DeDeque: " << deque.DeDeque() << endl;
-	cout << "Deque is empty: " << deque.Empty() << endl;
+	Queue<int, 4> queue;
+	cout << "Queuq is empty: " << queue.Empty() << endl;
+	cout << "EnQueuq 1 2 3 4" << endl;
+	queue.EnQueue(1);
+	queue.EnQueue(2);
+	queue.EnQueue(3);
+	queue.EnQueue(4);
+	cout << "Deque is full: " << queue.Full() << endl;
+	cout << "DeQueue: " << queue.DeQueue() << endl;
+	cout << "DeQueue: " << queue.DeQueue() << endl;
+	cout << "DeQueue: " << queue.DeQueue() << endl;
+	cout << "DeQueue: " << queue.DeQueue() << endl;
+	cout << "queue is empty: " << queue.Empty() << endl;
 
 	cout << "--------------------------------------" << endl;
 
-	cout << "Deque is empty: " << deque.Empty() << endl;
+	cout << "Deque is empty: " << queue.Empty() << endl;
 	cout << "EnDeque 5 6 7 8 9" << endl;
-	deque.EnDeque(5);
-	deque.EnDeque(6);
-	deque.EnDeque(7);
-	deque.EnDeque(8);
-	cout << "Deque is full: " << deque.Full() << endl;
-	cout << "DeDeque: " << deque.DeDeque() << endl;
-	cout << "DeDeque: " << deque.DeDeque() << endl;
-	cout << "DeDeque: " << deque.DeDeque() << endl;
-	cout << "DeDeque: " << deque.DeDeque() << endl;
-	cout << "Deque is empty: " << deque.Empty() << endl;
+	queue.EnQueue(5);
+	queue.EnQueue(6);
+	queue.EnQueue(7);
+	queue.EnQueue(8);
+	cout << "Deque is full: " << queue.Full() << endl;
+	cout << "DeQueue: " << queue.DeQueue() << endl;
+	cout << "DeQueue: " << queue.DeQueue() << endl;
+	cout << "DeQueue: " << queue.DeQueue() << endl;
+	cout << "DeQueue: " << queue.DeQueue() << endl;
+	cout << "queue is empty: " << queue.Empty() << endl;
 
 	return 0;
 }
