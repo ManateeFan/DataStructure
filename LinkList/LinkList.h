@@ -20,13 +20,13 @@ private:
 public:
 	LinkList() :head(nullptr) {};
 
-	// ���ҵ�һ���ؼ���Ϊk��Ԫ�ز�����ָ��
+	// 返回第一个值为k的节点地址
 	typename Node<T>::pointer Search(T const&) const;
 
-	// ���ڵ�x����LinkListǰ��
+	// 头插
 	void Insert( typename Node<T>::pointer const& x);
 
-	// ɾ���ڵ�x
+
 	void Delete(typename Node<T>::pointer const& x);
 };
 
