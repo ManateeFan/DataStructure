@@ -16,9 +16,13 @@ private:
 	};
 	Node* elems[MAXSIZE];
 public:
+	DirectAddressTable() = default;
+	~DirectAddressTable() = default;
+
 	using pointer = Node*;
 	void Insert(unsigned k, T const& v);
 	pointer Search(unsigned k) const;
+	void Delete(unsigned k);
 };
 
 template<typename T, int MAXSIZE>
@@ -37,3 +41,11 @@ typename DirectAddressTable<T, MAXSIZE>::pointer DirectAddressTable<T, MAXSIZE>:
 	return elems[k];
 }
 
+template<typename T, int MAXSIZE>
+inline
+void DirectAddressTable<T, MAXSIZE>::Delete(unsigned k)
+{
+	if (elems[k])
+		delete elems[k];
+	elems[k] = nullptr;
+}
