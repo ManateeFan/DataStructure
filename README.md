@@ -8,6 +8,7 @@
 4. [CircularList](https://github.com/vlyf/DataStructure/tree/master/CircularList)
 5. [BinaryTree](https://github.com/vlyf/DataStructure/tree/master/BinaryTree)
 6. [Heap](https://github.com/vlyf/DataStructure/tree/master/Heap)
+7. [HashTable](https://github.com/vlyf/DataStructure/tree/master/HashTable)
 
 ## 常用类的实现
 
