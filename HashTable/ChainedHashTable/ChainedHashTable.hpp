@@ -1,7 +1,16 @@
+//*****************************************************************
+//  ChainedHashTable.hpp
+//  HashTable
+//
+//  Created by vlyf on December 2, 2019
+//
+//  This header file contains the Hash Table class.
+//  Hash Table table elements consist of Linked List pointer.
+//*****************************************************************
+
 #pragma once
 
-#include "LinkList.h"
-#include <array>
+#include "LinkList.hpp"
 
 using namespace std;
 
@@ -9,19 +18,19 @@ template<typename T, int MAXSIZE>
 class ChainedHashTable
 {
 private:
-	array<LinkList<T>*, MAXSIZE> table;
+	LinkList<T>** table;
 	int length;
 
 	int hash(string const& itemKey);
 public:
 	ChainedHashTable();
-	~ChainedHashTable() = default;
+	~ChainedHashTable();
 
 	void Insert(Item<T>* newItem);
 
 	void Remove(string const& itemKey);
 	
-	Item<T>* Get(string const& itemKey) const;
+	Item<T>* Get(string const& itemKey);
 
 	int Length() const
 	{
@@ -36,13 +45,23 @@ inline int ChainedHashTable<T, MAXSIZE>::hash(string const& itemKey)
 {
 	int value = 0;
 	for (std::size_t i = 0; i < itemKey.length(); i++)
-		value += itemKey[i] - '0';
+		value += itemKey[i];
 	return (itemKey.length() * value) % length;
 }
 
 template<typename T, int MAXSIZE>
-inline ChainedHashTable<T, MAXSIZE>::ChainedHashTable() :length(MAXSIZE)
+inline ChainedHashTable<T, MAXSIZE>::ChainedHashTable() :table(new LinkList<T>*[MAXSIZE]), length(MAXSIZE)
 {
+	for (int i = 0; i < MAXSIZE; i++)
+	{
+		table[i] = new LinkList<T>;
+	}
+}
+
+template<typename T, int MAXSIZE>
+inline ChainedHashTable<T, MAXSIZE>::~ChainedHashTable()
+{
+	delete[]table;
 }
 
 template<typename T, int MAXSIZE>
@@ -60,7 +79,7 @@ inline void ChainedHashTable<T, MAXSIZE>::Remove(string const& itemKey)
 }
 
 template<typename T, int MAXSIZE>
-inline Item<T>* ChainedHashTable<T, MAXSIZE>::Get(string const& itemKey) const
+inline Item<T>* ChainedHashTable<T, MAXSIZE>::Get(string const& itemKey)
 {
 	int index = hash(itemKey);
 	return table[index]->GetItem(itemKey);
@@ -70,9 +89,9 @@ template<typename T, int MAXSIZE>
 inline int ChainedHashTable<T, MAXSIZE>::GetNumberOfItems() const
 {
 	int itemCount = 0;
-	for (auto list : table)
+	for (int i = 0; i < MAXSIZE; i++)
 	{
-		itemCount += list->Length();
+		itemCount += table[i]->Length();
 	}
 	return itemCount;
 }

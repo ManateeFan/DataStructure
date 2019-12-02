@@ -1,6 +1,2 @@
-﻿  LinkList.cpp
-  main.cpp
-  正在生成代码...
-main.obj : error LNK2019: 无法解析的外部符号 "public: void __cdecl LinkList<int>::InsertItem(struct Item<int> *)" (?InsertItem@?$LinkList@H@@QEAAXPEAU?$Item@H@@@Z)，该符号在函数 "public: void __cdecl ChainedHashTable<int,10>::Insert(struct Item<int> *)" (?Insert@?$ChainedHashTable@H$09@@QEAAXPEAU?$Item@H@@@Z) 中被引用
-main.obj : error LNK2019: 无法解析的外部符号 "public: int __cdecl LinkList<int>::Length(void)const " (?Length@?$LinkList@H@@QEBAHXZ)，该符号在函数 "public: int __cdecl ChainedHashTable<int,10>::GetNumberOfItems(void)const " (?GetNumberOfItems@?$ChainedHashTable@H$09@@QEBAHXZ) 中被引用
-D:\Github\DataStructure\HashTable\ChainedHashTable\x64\Debug\ChainedHashTable.exe : fatal error LNK1120: 2 个无法解析的外部命令
+﻿  main.cpp
+  ChainedHashTable.vcxproj -> D:\Github\DataStructure\HashTable\ChainedHashTable\x64\Debug\ChainedHashTable.exe

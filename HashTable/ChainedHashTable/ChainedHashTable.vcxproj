@@ -124,10 +124,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ChainedHashTable.hpp" />
-    <ClInclude Include="LinkList.h" />
+    <ClInclude Include="LinkList.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="LinkList.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
