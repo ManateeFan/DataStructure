@@ -1,72 +1,79 @@
 #pragma once
 
+#include "LinkList.h"
+#include <array>
 
-/* k % SIZE */
-template<typename T, int SIZE = 22>
+using namespace std;
+
+template<typename T, int MAXSIZE>
 class ChainedHashTable
 {
 private:
-	struct Node
-	{
-		unsigned key;
-		T value;
-		Node* prev;
-		Node* next;
-		Node() :prev(nullptr), next(nullptr) {}
-		Node(int k, T const& v) :key(k), value(v), prev(nullptr), next(nullptr) {}
-	};
-	Node* elems[SIZE];
+	array<LinkList<T>*, MAXSIZE> table;
+	int length;
 
+	int hash(string const& itemKey);
 public:
-	ChainedHashTable()
-	{
-		for (int i = 0; i < SIZE; i++)
-		{
-			elems[i] = nullptr;
-		}
-	}
+	ChainedHashTable();
 	~ChainedHashTable() = default;
 
-	void Insert(unsigned k, T const& x);
+	void Insert(Item<T>* newItem);
 
-	void Delete(unsigned k, T const& x);
+	void Remove(string const& itemKey);
+	
+	Item<T>* Get(string const& itemKey) const;
+
+	int Length() const
+	{
+		return length;
+	}
+
+	int GetNumberOfItems() const;
 };
 
-template<typename T, int SIZE>
-inline 
-void ChainedHashTable<T, SIZE>::Insert(unsigned k, T const& x)
+template<typename T, int MAXSIZE>
+inline int ChainedHashTable<T, MAXSIZE>::hash(string const& itemKey)
 {
-	unsigned index = k % size;
-	Node* node = new Node(k, x);
-	if (elems[index])
-	{
-		elems[index]->prev = node;
-		node->next = elems[index];
-		elems[index] = node;
-	}
-	else
-	{
-		elems[index] = node;
-	}
+	int value = 0;
+	for (std::size_t i = 0; i < itemKey.length(); i++)
+		value += itemKey[i] - '0';
+	return (itemKey.length() * value) % length;
 }
 
-template<typename T, int SIZE>
-inline
-void ChainedHashTable<T, SIZE>::Delete(unsigned k, T const& x)
+template<typename T, int MAXSIZE>
+inline ChainedHashTable<T, MAXSIZE>::ChainedHashTable() :length(MAXSIZE)
 {
-	unsigned index = k % SIZE;
-	if (elems[index])
-	{
-		Node* p = elems[index];
-		while (p->key != k && p->value != x && p)
-		{
-			p = p->next;
-		}
-		if (p)
-		{
-			p->prev->next = p->next;
-			p->next->prev = p->prev;
-			delete p;
-		}
-	}
 }
+
+template<typename T, int MAXSIZE>
+inline void ChainedHashTable<T, MAXSIZE>::Insert(Item<T>* newItem)
+{
+	int index = hash(newItem->key);
+	table[index]->InsertItem(newItem);
+}
+
+template<typename T, int MAXSIZE>
+inline void ChainedHashTable<T, MAXSIZE>::Remove(string const& itemKey)
+{
+	int index = hash(itemKey);
+	table[index]->RemoveItem(itemKey);
+}
+
+template<typename T, int MAXSIZE>
+inline Item<T>* ChainedHashTable<T, MAXSIZE>::Get(string const& itemKey) const
+{
+	int index = hash(itemKey);
+	return table[index]->GetItem(itemKey);
+}
+
+template<typename T, int MAXSIZE>
+inline int ChainedHashTable<T, MAXSIZE>::GetNumberOfItems() const
+{
+	int itemCount = 0;
+	for (auto list : table)
+	{
+		itemCount += list->Length();
+	}
+	return itemCount;
+}
+

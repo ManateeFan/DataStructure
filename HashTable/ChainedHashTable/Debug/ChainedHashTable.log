@@ -1,0 +1,4 @@
+﻿  main.cpp
+main.obj : error LNK2019: 无法解析的外部符号 "public: void __thiscall LinkList<int>::InsertItem(struct Item<int> *)" (?InsertItem@?$LinkList@H@@QAEXPAU?$Item@H@@@Z)，该符号在函数 "public: void __thiscall ChainedHashTable<int,10>::Insert(struct Item<int> *)" (?Insert@?$ChainedHashTable@H$09@@QAEXPAU?$Item@H@@@Z) 中被引用
+main.obj : error LNK2019: 无法解析的外部符号 "public: int __thiscall LinkList<int>::Length(void)const " (?Length@?$LinkList@H@@QBEHXZ)，该符号在函数 "public: int __thiscall ChainedHashTable<int,10>::GetNumberOfItems(void)const " (?GetNumberOfItems@?$ChainedHashTable@H$09@@QBEHXZ) 中被引用
+D:\Github\DataStructure\HashTable\ChainedHashTable\Debug\ChainedHashTable.exe : fatal error LNK1120: 2 个无法解析的外部命令
