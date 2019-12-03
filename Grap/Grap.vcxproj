@@ -23,6 +23,7 @@
     <ProjectGuid>{4280686E-38B8-4AFE-A177-71258CDB695C}</ProjectGuid>
     <RootNamespace>Grap</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Graph</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
