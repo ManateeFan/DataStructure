@@ -58,7 +58,7 @@ inline LinkList<T>::LinkList() :head(new Item<T>), length(0)
 template<typename T>
 inline LinkList<T>::~LinkList()
 {
-	if (length != 0)
+	if (head->next)
 	{
 		Item<T>* p = head->next;
 		Item<T>* del = head->next;
