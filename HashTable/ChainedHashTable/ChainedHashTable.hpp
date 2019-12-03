@@ -24,6 +24,7 @@ private:
 	int hash(string const& itemKey);
 public:
 	ChainedHashTable();
+
 	~ChainedHashTable();
 
 	void Insert(Item<T>* newItem);
