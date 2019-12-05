@@ -10,6 +10,7 @@
 #include <array>
 #include <iostream>
 #include "Bag.h"
+#include <iterator>
 
 class Graph
 {
@@ -17,7 +18,8 @@ private:
 	int V;									// Number of vertex
 	int E;									// Number of edge
 	Bag* bags;								// Adjacency list
-
+	bool* marked;
+	int count;
 public:
 
 	Graph(int v);							// 创建含v个顶点但不含边的图
@@ -29,6 +31,7 @@ public:
 	~Graph()
 	{
 		delete[]bags;
+		delete[]marked;
 	}
 
 	void AddEdge(int v1, int v2);
@@ -53,18 +56,28 @@ public:
 
 
 	int SelfLoop() const;					// 自环个数
+
+	int DepthFirstSearch(int v);			// 深度优先搜索
+
+private:
+	void dfs(int v);
 };
 
 
-Graph::Graph(int v) :V(v), E(0), bags(new Bag[V]) {}
+Graph::Graph(int v) :V(v), E(0), bags(new Bag[V]), marked(new bool[V]), count(0) 
+{
+	for (int i = 0; i < V; i++)
+		marked[i] = false;
+}
 
-Graph::Graph(std::istream& in) : V(0), E(0), bags(nullptr)
+Graph::Graph(std::istream& in) : V(0), E(0), bags(nullptr), marked(nullptr), count(0)
 {
 	int vertexNum = 0;						// Number of vertex
 	int edgeNum = 0;						// Number of edge
 	in >> vertexNum >> edgeNum;
 	V = vertexNum;
 	E = edgeNum;
+	marked = new bool[V];
 	bags = new Bag[V];
 	while (edgeNum--)
 	{
@@ -142,4 +155,28 @@ inline int Graph::SelfLoop() const
 			num++;
 	}
 	return num;
+}
+
+inline int Graph::DepthFirstSearch(int v) 
+{
+	dfs(v);
+	
+	int tmp = count;
+	count = 0;
+	return tmp;
+}
+
+inline void Graph::dfs(int v)
+{
+	marked[v] = true;
+	count++;
+	Bag* list = Adjs(v);
+	Item* p = list->head->next;
+	auto f = [&]()->bool { return marked[p->V]; };
+	while (p)
+	{
+		if (!f())
+			dfs(p->V);
+		p = p->next;
+	}
 }

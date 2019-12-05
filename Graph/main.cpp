@@ -5,7 +5,7 @@ using namespace std;
 
 int main()
 {
-	Graph graph(5);
+	Graph graph(6);
 
 	graph.AddEdge(0, 1);
 	graph.AddEdge(0, 2);
@@ -13,7 +13,7 @@ int main()
 	graph.AddEdge(2, 4);
 	graph.AddEdge(3, 4);
 	graph.AddEdge(4, 0);
-
+	graph.AddEdge(5, 5);
 	cout << "0 degree: " << graph.Degree(0) << endl;
 	cout << "1 degree: " << graph.Degree(1) << endl;
 	cout << "2 degree: " << graph.Degree(2) << endl;
@@ -27,5 +27,7 @@ int main()
 
 	graph.AddEdge(4, 4);
 	cout << "self loop: " << graph.SelfLoop() << endl;
+
+	cout << "depth first search: " << graph.DepthFirstSearch(4) << endl;
 	return 0;
 }

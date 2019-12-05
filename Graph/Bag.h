@@ -22,6 +22,7 @@ private:
 	Item* head;
 	int itemNum;
 public:
+	friend class Graph;
 	Bag();
 	~Bag();
 
