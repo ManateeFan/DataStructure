@@ -29,5 +29,7 @@ int main()
 	cout << "self loop: " << graph.SelfLoop() << endl;
 
 	cout << "depth first search: " << graph.DepthFirstSearch(4) << endl;
+
+	graph.BreadthFirstSearch(1);
 	return 0;
 }

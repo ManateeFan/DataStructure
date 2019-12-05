@@ -11,6 +11,7 @@
 #include <iostream>
 #include "Bag.h"
 #include <iterator>
+#include <queue>
 
 class Graph
 {
@@ -59,15 +60,21 @@ public:
 
 	int DepthFirstSearch(int v);			// 深度优先搜索
 
+	void BreadthFirstSearch(int v);			// 广度优先搜索
+
 private:
 	void dfs(int v);
+	void bfs(int v);
 };
 
 
 Graph::Graph(int v) :V(v), E(0), bags(new Bag[V]), marked(new bool[V]), count(0) 
 {
 	for (int i = 0; i < V; i++)
+	{
+		bags[i].head->V = i;
 		marked[i] = false;
+	}
 }
 
 Graph::Graph(std::istream& in) : V(0), E(0), bags(nullptr), marked(nullptr), count(0)
@@ -129,7 +136,7 @@ inline bool Graph::Connected(int v1, int v2) const
 	}
 }
 
-int Graph::Degree(int v) const
+inline int Graph::Degree(int v) const
 {
 	return bags[v].GetNum();
 }
@@ -166,6 +173,11 @@ inline int Graph::DepthFirstSearch(int v)
 	return tmp;
 }
 
+inline void Graph::BreadthFirstSearch(int v)
+{
+		 bfs(v);
+}
+
 inline void Graph::dfs(int v)
 {
 	marked[v] = true;
@@ -178,5 +190,30 @@ inline void Graph::dfs(int v)
 		if (!f())
 			dfs(p->V);
 		p = p->next;
+	}
+}
+
+inline void Graph::bfs(int v)
+{
+	Bag* list = Adjs(v);
+	Item* p = list->head;
+	list->head->color = Color::GRAY;
+	std::queue<Item*> dq;
+	dq.push(p);
+	while (!dq.empty())
+	{
+		Item* paren = dq.front();
+		p = paren->next;
+
+		while (p)
+		{
+			p->color = Color::GRAY;
+			p->depth = dq.front()->depth + 1;
+			p->parent = paren;
+			dq.push(p);
+			p = p->next;
+		}
+		dq.pop();
+		paren->color = Color::BLACK;
 	}
 }

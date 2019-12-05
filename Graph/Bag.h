@@ -8,12 +8,21 @@
 #pragma once
 #include <iostream>
 
+enum class Color
+{
+	WHITE,			// 未被访问
+	GRAY,			// 已被发现，但邻接链表未被检查
+	BLACK,			// 已被发现，且邻接链表被检查
+};
 struct Item
 {
 	int V;
+	Color color;
+	int depth;
+	Item* parent;
 	Item* next;
-	Item() :next(nullptr) {}
-	Item(int v) :V(v), next(nullptr) {}
+	Item() :parent(nullptr), next(nullptr), depth(0), color(Color::WHITE) {}
+	Item(int v) :V(v), parent(nullptr), next(nullptr), depth(0), color(Color::WHITE) {}
 };
 
 class Bag
