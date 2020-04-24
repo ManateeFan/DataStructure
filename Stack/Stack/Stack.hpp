@@ -2,60 +2,44 @@
 
 #include <stdexcept>
 
-/* Ñ§Ï°·ÇÀàÐÍµÄÀàÄ£°å²ÎÊý£¬²¢×Ô¶¨ÒåÒ»¸öÕ»×÷ÎªÁ·Ï°*/
-/* Êý×é´óÐ¡ÉèÖÃÎª·ÇÀàÐÍµÄÄ£°å²ÎÊý */
+/* Ñ§Ï°ï¿½ï¿½ï¿½ï¿½ï¿½Íµï¿½ï¿½ï¿½Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Õ»ï¿½ï¿½Îªï¿½ï¿½Ï°*/
+/* ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½Íµï¿½Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ */
 
 template <typename T, int MAXSIZE>
-class Stack
-{
-private:
-	T elems[MAXSIZE];
-	int numElem;
+class Stack {
+ private:
+  T elems[MAXSIZE];
+  int numElem;
 
-public:
-	Stack();
-	void push(T const&);
-	void pop();
-	T top() const;
+ public:
+  Stack();
+  void push(T const&);
+  void pop();
+  T top() const;
 
-	bool empty() const
-	{
-		return numElem == 0;
-	}
+  bool empty() const { return numElem == 0; }
 
-	bool full() const
-	{
-		return MAXSIZE == numElem;
-	}
+  bool full() const { return MAXSIZE == numElem; }
 };
 
 template <typename T, int MAXSIZE>
-inline Stack<T, MAXSIZE>::Stack()
-	: numElem(0)
-{
+inline Stack<T, MAXSIZE>::Stack() : numElem(0) {}
 
+template <typename T, int MAXSIZE>
+inline void Stack<T, MAXSIZE>::push(T const& elem) {
+  if (numElem == MAXSIZE)
+    throw std::out_of_range("Stack<>::push(): stack is full");
+  elems[numElem++] = elem;
 }
 
 template <typename T, int MAXSIZE>
-inline void Stack<T, MAXSIZE>::push(T const& elem)
-{
-	if (numElem == MAXSIZE)
-		throw std::out_of_range("Stack<>::push(): stack is full");
-	elems[numElem++] = elem;
+inline void Stack<T, MAXSIZE>::pop() {
+  if (numElem <= 0) throw std::out_of_range("Stack<>::pop(): stack is empty");
+  numElem--;
 }
 
 template <typename T, int MAXSIZE>
-inline void Stack<T, MAXSIZE>::pop()
-{
-	if (numElem <= 0)
-		throw std::out_of_range("Stack<>::pop(): stack is empty");
-	numElem--;
-}
-
-template <typename T, int MAXSIZE>
-inline T Stack<T, MAXSIZE>::top() const
-{
-	if (numElem <= 0)
-		throw std::out_of_range("Stack<>::top(): stack is empty");
-	return elems[numElem - 1];
+inline T Stack<T, MAXSIZE>::top() const {
+  if (numElem <= 0) throw std::out_of_range("Stack<>::top(): stack is empty");
+  return elems[numElem - 1];
 }

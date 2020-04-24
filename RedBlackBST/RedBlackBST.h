@@ -1,184 +1,153 @@
 #pragma once
 #include <stdexcept>
 
-enum class Color
-{
-	RED,
-	BLACK
+enum class Color { RED, BLACK };
+
+template <typename Key, typename Value>
+class RedBlackBST {
+ private:
+  class Node {
+   public:
+    Node(Key const& k, Value const& v)
+        : key(k),
+          value(v),
+          left(nullptr),
+          right(nullptr),
+          N(1),
+          color(Color::BLACK) {}
+    Key key;
+    Value value;
+    Node* left;
+    Node* right;
+    Color color;
+    int N;
+  };
+  Node* root;
+
+ public:
+  RedBlackBST() : root(nullptr) {}
+
+  // ï¿½ï¿½ï¿½Ú¸ï¿½keyï¿½ï¿½ï¿½ï¿½Â½Úµã£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½
+  void put(Key const& k, Value const& v) {
+    root = put(root, k, v);
+    root->color = Color::BLACK;
+  }
+
+  int size() const {
+    if (root)
+      return size(root);
+    else
+      return 0;
+  }
+
+  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¼ï¿½Öµ
+  Key select(int const& i) const { return select(root, i)->key; }
+  // ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½Ú¸Ã¼ï¿½Öµï¿½Ä½Úµï¿½ï¿½ï¿½ï¿½
+  int rank(Key const& k) { return rank(root, k); }
+
+  Value get(Key const& k) const { return get(root, k); }
+
+ private:
+  // ï¿½Ð¶Ï½Úµï¿½ï¿½ï¿½É«ï¿½Ç·ï¿½Îªï¿½ï¿½É«
+  bool isRed(Node const* const& h) const {
+    if (!h)
+      return false;
+    else
+      return h->color == Color::RED;
+  }
+
+  // ï¿½ï¿½ï¿½ï¿½
+  Node* rotateLeft(Node* const& h) {
+    Node* x = h->right;
+    h->right = x->left;
+    x->left = h;
+    x->N = h->N;
+    x->color = h->color;
+    h->color = Color::RED;
+    h->N = size(h->left) + size(h->right) + 1;
+    return x;
+  }
+
+  // ï¿½ï¿½ï¿½ï¿½
+  Node* rotateRight(Node* const& h) {
+    Node* x = h->left;
+    h->left = x->right;
+    x->right = h;
+    x->N = h->N;
+    x->color = h->color;
+    h->color = Color::RED;
+    h->N = size(h->left) + size(h->right) + 1;
+    return x;
+  }
+
+  // ï¿½Ô¸Ã½Úµï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä´ï¿½Ð¡
+  int size(Node* h) const {
+    if (!h) return 0;
+    return h->N;
+  }
+
+  // ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å®ï¿½ï¿½Îªï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½É«
+  void flipColors(Node* h) {
+    h->color = Color::RED;
+    h->left->color = Color::BLACK;
+    h->right->color = Color::BLACK;
+  }
+  Node* put(Node* h, Key const& k, Value const& v) {
+    if (!h) return new Node(k, v);
+    if (k < h->key) {
+      h->left = put(h->left, k, v);
+    } else if (k > h->key) {
+      h->right = put(h->right, k, v);
+    } else {
+      h->value = v;
+    }
+
+    // ï¿½Ð¶ï¿½ï¿½Ç·ï¿½ï¿½ï¿½Òªï¿½ï¿½×ª
+
+    // ï¿½Ã½Úµï¿½ï¿½ï¿½ï¿½ï¿½Å®Îªï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å®Îªï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    if (isRed(h->right) && !isRed(h->left)) h = rotateLeft(h);
+
+    // ï¿½Ã½Úµï¿½ï¿½ï¿½ï¿½ï¿½Å®Îªï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å®Ò²Îªï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    if (isRed(h->left) && isRed(h->left->left)) h = rotateRight(h);
+
+    // ï¿½Ã½Úµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å®ï¿½ï¿½Îªï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½É«
+    if (isRed(h->left) && isRed(h->right)) flipColors(h);
+
+    h->N = size(h->left) + size(h->right) + 1;
+    return h;
+  }
+
+  Node* select(Node* node, int i) const {
+    if (!node) throw std::out_of_range("root is null");
+
+    if (i > size(node))
+      return select(node->right, i);
+    else if (i < size(node))
+      return select(node->left, i);
+    else
+      return node;
+  }
+
+  int rank(Node* const& node, Key const& k) {
+    if (!node) return 0;
+    if (k < node->key)
+      return rank(node->left, k);
+    else if (k > node->key)
+      return rank(node->right, k);
+    else
+      return size(node);
+  }
+
+  Value get(Node* node, Key const& k) const {
+    if (!node)
+      throw std::out_of_range("root is null");
+    else {
+      if (k < node->key)
+        get(node->left, k);
+      else if (k > node->key)
+        get(node->right, k);
+      else
+        return node->value;
+    }
+  }
 };
-
-template<typename Key, typename Value>
-class RedBlackBST
-{
-private:
-	class Node
-	{
-	public:
-		Node(Key const& k, Value const& v)
-			: key(k), value(v),left(nullptr), 
-			right(nullptr), N(1), color(Color::BLACK) {}
-		Key key;
-		Value value;
-		Node* left;
-		Node* right;
-		Color color;
-		int N;
-	};
-	Node* root;
-public:
-	RedBlackBST() :root(nullptr) {}
-
-	// ´æÔÚ¸ÃkeyÔò¸üÐÂ½Úµã£¬·ñÔò²åÈë½Úµã
-	void put(Key const& k, Value const& v)
-	{
-		root = put(root, k, v);
-		root->color = Color::BLACK;
-	}
-
-	int size() const
-	{
-		if (root)
-			return size(root);
-		else
-			return 0;
-	}
-
-	// ¸ù¾ÝÅÅÃû£¬»ñµÃ¼üÖµ
-	Key select(int const& i) const
-	{
-		return select(root, i)->key;
-	}
-	// ·µ»ØÐ¡ÓÚ¸Ã¼üÖµµÄ½Úµã¸öÊý
-	int rank(Key const& k) 
-	{
-		return rank(root, k);
-	}
-
-	Value get(Key const& k) const
-	{
-		return get(root, k);
-	}
-
-private:
-	// ÅÐ¶Ï½ÚµãÑÕÉ«ÊÇ·ñÎªºìÉ«
-	bool isRed(Node const* const& h) const
-	{
-		if (!h)
-			return false;
-		else
-			return h->color == Color::RED;
-	}
-
-	// ×óÐý
-	Node* rotateLeft(Node* const& h)
-	{
-		Node* x = h->right;
-		h->right = x->left;
-		x->left = h;
-		x->N = h->N;
-		x->color = h->color;
-		h->color = Color::RED;
-		h->N = size(h->left) + size(h->right) + 1;
-		return x;
-	}
-
-	// ÓÒÐý
-	Node* rotateRight(Node* const& h)
-	{
-		Node* x = h->left;
-		h->left = x->right;
-		x->right = h;
-		x->N = h->N;
-		x->color = h->color;
-		h->color = Color::RED;
-		h->N = size(h->left) + size(h->right) + 1;
-		return x;
-	}
-
-	// ÒÔ¸Ã½ÚµãÎª¸ùµÄÊ÷µÄ´óÐ¡
-	int size(Node* h) const
-	{
-		if (!h) return 0;
-		return h->N;
-	}
-
-	// ½Úµã×óÓÒ×ÓÅ®¾ùÎªºìÉ«£¬Ðè×ª»»ÑÕÉ«
-	void flipColors(Node* h)
-	{
-		h->color		= Color::RED;
-		h->left->color	= Color::BLACK;
-		h->right->color = Color::BLACK;
-	}
-	Node* put(Node* h, Key const& k, Value const& v)
-	{
-		if (!h)
-			return new Node(k, v);
-		if (k < h->key)
-		{
-			h->left = put(h->left, k, v);
-		}
-		else if (k > h->key)
-		{
-			h->right = put(h->right, k, v);
-		}
-		else
-		{
-			h->value = v;
-		}
-
-		// ÅÐ¶ÏÊÇ·ñÐèÒªÐý×ª
-
-		// ¸Ã½ÚµãÓÒ×ÓÅ®ÎªºìÉ«£¬×ó×ÓÅ®ÎªºÚÉ«£¬Ðè×óÐý
-		if (isRed(h->right) && !isRed(h->left))
-			h = rotateLeft(h);
-
-		// ¸Ã½Úµã×ó×ÓÅ®ÎªºìÉ«£¬×ó×ÓÅ®µÄ×ó×ÓÅ®Ò²ÎªºìÉ«£¬ÐèÓÒÐý
-		if (isRed(h->left) && isRed(h->left->left))
-			h = rotateRight(h);
-
-		// ¸Ã½Úµã×óÓÒ×ÓÅ®¶¼ÎªºìÉ«£¬ÔòÐè×ª»»ÑÕÉ«
-		if (isRed(h->left) && isRed(h->right))
-			flipColors(h);
-
-		h->N = size(h->left) + size(h->right) + 1;
-		return h;
-	}
-
-	Node* select(Node* node, int i) const
-	{
-		if (!node) throw std::out_of_range("root is null");
-
-		if (i > size(node))
-			return select(node->right, i);
-		else if (i < size(node))
-			return select(node->left, i);
-		else
-			return node;
-	}
-
-	int rank(Node* const& node, Key const& k) 
-	{
-		if (!node) return 0;
-		if (k < node->key)
-			return rank(node->left, k);
-		else if (k > node->key)
-			return rank(node->right, k);
-		else
-			return size(node);
-	}
-
-	Value get(Node* node, Key const& k) const
-	{
-		if (!node) throw std::out_of_range("root is null");
-		else
-		{
-			if (k < node->key)
-				get(node->left, k);
-			else if (k > node->key)
-				get(node->right, k);
-			else
-				return node->value;
-		}
-	}
-};
-

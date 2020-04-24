@@ -8,94 +8,79 @@
 #pragma once
 #include <iostream>
 
-enum class Color
-{
-	WHITE,			// Î´±»·ÃÎÊ
-	GRAY,			// ÒÑ±»·¢ÏÖ£¬µ«ÁÚ½ÓÁ´±íÎ´±»¼ì²é
-	BLACK,			// ÒÑ±»·¢ÏÖ£¬ÇÒÁÚ½ÓÁ´±í±»¼ì²é
+enum class Color {
+  WHITE,  // Î´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+  GRAY,   // ï¿½Ñ±ï¿½ï¿½ï¿½ï¿½Ö£ï¿½ï¿½ï¿½ï¿½Ú½ï¿½ï¿½ï¿½ï¿½ï¿½Î´ï¿½ï¿½ï¿½ï¿½ï¿½
+  BLACK,  // ï¿½Ñ±ï¿½ï¿½ï¿½ï¿½Ö£ï¿½ï¿½ï¿½ï¿½Ú½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 };
-struct Item
-{
-	int V;
-	Color color;
-	int depth;
-	Item* parent;
-	Item* next;
-	Item() :parent(nullptr), next(nullptr), depth(0), color(Color::WHITE) {}
-	Item(int v) :V(v), parent(nullptr), next(nullptr), depth(0), color(Color::WHITE) {}
-};
-
-class Bag
-{
-private:
-	Item* head;
-	int itemNum;
-public:
-	friend class Graph;
-	Bag();
-	~Bag();
-
-	void Add(int v);
-	void Remove(int v);
-	int GetNum() const;
-	Item* Get(int v);
+struct Item {
+  int V;
+  Color color;
+  int depth;
+  Item* parent;
+  Item* next;
+  Item() : parent(nullptr), next(nullptr), depth(0), color(Color::WHITE) {}
+  Item(int v)
+      : V(v), parent(nullptr), next(nullptr), depth(0), color(Color::WHITE) {}
 };
 
-Bag::Bag() :head(new Item), itemNum(0)
-{
+class Bag {
+ private:
+  Item* head;
+  int itemNum;
+
+ public:
+  friend class Graph;
+  Bag();
+  ~Bag();
+
+  void Add(int v);
+  void Remove(int v);
+  int GetNum() const;
+  Item* Get(int v);
+};
+
+Bag::Bag() : head(new Item), itemNum(0) {}
+
+Bag::~Bag() {
+  Item* p = head;
+  Item* del = head->next;
+  while (del) {
+    p = del->next;
+    delete del;
+    del = p;
+  }
+  delete head;
 }
 
-Bag::~Bag()
-{
-	Item* p = head;
-	Item* del = head->next;
-	while (del)
-	{
-		p = del->next;
-		delete del;
-		del = p;
-	}
-	delete head;
+void Bag::Add(int v) {
+  Item* newItem = new Item(v);
+  newItem->next = head->next;
+  head->next = newItem;
+  itemNum++;
 }
 
-void Bag::Add(int v)
-{
-	Item* newItem = new Item(v);
-	newItem->next = head->next;
-	head->next = newItem;
-	itemNum++;
+void Bag::Remove(int v) {
+  Item* p = head;
+  Item* del = head->next;
+  while (del && del->V != v) {
+    p = p->next;
+    del = del->next;
+  }
+  if (del) {
+    p->next = del->next;
+    delete del;
+    itemNum--;
+  }
 }
 
-void Bag::Remove(int v)
-{
-	Item* p = head;
-	Item* del = head->next;
-	while (del && del->V != v)
-	{
-		p = p->next;
-		del = del->next;
-	}
-	if (del)
-	{
-		p->next = del->next;
-		delete del;
-		itemNum--;
-	}
-}
+inline int Bag::GetNum() const { return itemNum; }
 
-inline int Bag::GetNum() const
-{
-	return itemNum;
-}
-
-Item* Bag::Get(int v)
-{
-	Item* p = head->next;
-	while (p && p->V != v)
-	{
-		p = p->next;
-	}
-	if (p)
-		return p;
-	return nullptr;
+Item* Bag::Get(int v) {
+  Item* p = head->next;
+  while (p && p->V != v) {
+    p = p->next;
+  }
+  if (p) return p;
+  return nullptr;
 }

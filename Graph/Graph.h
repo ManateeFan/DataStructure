@@ -9,211 +9,163 @@
 
 #include <array>
 #include <iostream>
-#include "Bag.h"
 #include <iterator>
 #include <queue>
 
-class Graph
-{
-private:
-	int V;									// Number of vertex
-	int E;									// Number of edge
-	Bag* bags;								// Adjacency list
-	bool* marked;
-	int count;
-public:
+#include "Bag.h"
 
-	Graph(int v);							// ´´½¨º¬v¸ö¶¥µãµ«²»º¬±ßµÄÍ¼
+class Graph {
+ private:
+  int V;      // Number of vertex
+  int E;      // Number of edge
+  Bag* bags;  // Adjacency list
+  bool* marked;
+  int count;
 
-	
-	Graph(std::istream& in);				// ´ÓÊäÈëÁ÷in ¶ÁÈë¶¥µãÊý£¬±ßÊý£¬È»ºóÊäÈëÃ¿¶ÔÁ¬Í¨¶¥µã
+ public:
+  Graph(int v);  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½vï¿½ï¿½ï¿½ï¿½ï¿½ãµ«ï¿½ï¿½ï¿½ï¿½ï¿½ßµï¿½Í¼
 
+  Graph(std::istream& in);  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½in ï¿½ï¿½ï¿½ë¶¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½
 
-	~Graph()
-	{
-		delete[]bags;
-		delete[]marked;
-	}
+  ~Graph() {
+    delete[] bags;
+    delete[] marked;
+  }
 
-	void AddEdge(int v1, int v2);
+  void AddEdge(int v1, int v2);
 
+  Bag* Adjs(int v) const;  // ï¿½ï¿½ï¿½Ø¶ï¿½ï¿½ï¿½vï¿½ï¿½list
 
-	Bag* Adjs(int v) const;					// ·µ»Ø¶¥µãvµÄlist
+  int Count(int v) const;  // The number of connected with v
 
+  bool Connected(int v) const;  // v is connected with start
 
-	int Count(int v) const;					// The number of connected with v
+  bool Connected(int v1, int v2) const;  // v1 is connected with v2
 
+  int Degree(int v) const;  // ï¿½ï¿½ï¿½ï¿½vï¿½Ä¶ï¿½ï¿½ï¿½
 
-	bool Connected(int v) const;			// v is connected with start
+  int MaxDegree() const;  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
+  int SelfLoop() const;  // ï¿½Ô»ï¿½ï¿½ï¿½ï¿½ï¿½
 
-	bool Connected(int v1, int v2) const;	// v1 is connected with v2
+  int DepthFirstSearch(int v);  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
+  void BreadthFirstSearch(int v);  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-	int Degree(int v) const;				// ¶¥µãvµÄ¶ÈÊý
-
-
-	int MaxDegree() const;					// ¶¥µãµÄ×î´ó¶ÈÊý
-
-
-	int SelfLoop() const;					// ×Ô»·¸öÊý
-
-	int DepthFirstSearch(int v);			// Éî¶ÈÓÅÏÈËÑË÷
-
-	void BreadthFirstSearch(int v);			// ¹ã¶ÈÓÅÏÈËÑË÷
-
-private:
-	void dfs(int v);
-	void bfs(int v);
+ private:
+  void dfs(int v);
+  void bfs(int v);
 };
 
-
-Graph::Graph(int v) :V(v), E(0), bags(new Bag[V]), marked(new bool[V]), count(0) 
-{
-	for (int i = 0; i < V; i++)
-	{
-		bags[i].head->V = i;
-		marked[i] = false;
-	}
+Graph::Graph(int v)
+    : V(v), E(0), bags(new Bag[V]), marked(new bool[V]), count(0) {
+  for (int i = 0; i < V; i++) {
+    bags[i].head->V = i;
+    marked[i] = false;
+  }
 }
 
-Graph::Graph(std::istream& in) : V(0), E(0), bags(nullptr), marked(nullptr), count(0)
-{
-	int vertexNum = 0;						// Number of vertex
-	int edgeNum = 0;						// Number of edge
-	in >> vertexNum >> edgeNum;
-	V = vertexNum;
-	E = edgeNum;
-	marked = new bool[V];
-	bags = new Bag[V];
-	while (edgeNum--)
-	{
-		int v1, v2;
-		in >> v1 >> v2;
-		AddEdge(v1, v2);
-	}
+Graph::Graph(std::istream& in)
+    : V(0), E(0), bags(nullptr), marked(nullptr), count(0) {
+  int vertexNum = 0;  // Number of vertex
+  int edgeNum = 0;    // Number of edge
+  in >> vertexNum >> edgeNum;
+  V = vertexNum;
+  E = edgeNum;
+  marked = new bool[V];
+  bags = new Bag[V];
+  while (edgeNum--) {
+    int v1, v2;
+    in >> v1 >> v2;
+    AddEdge(v1, v2);
+  }
 }
 
-inline void Graph::AddEdge(int v1, int v2)
-{
-	bags[v1].Add(v2);
-	bags[v2].Add(v1);
-	E++;
+inline void Graph::AddEdge(int v1, int v2) {
+  bags[v1].Add(v2);
+  bags[v2].Add(v1);
+  E++;
 }
 
-inline Bag* Graph::Adjs(int v) const
-{
-	return &bags[v];
+inline Bag* Graph::Adjs(int v) const { return &bags[v]; }
+
+inline int Graph::Count(int v) const { return bags[v].GetNum(); }
+
+inline bool Graph::Connected(int v) const {
+  if (bags[0].Get(v) != nullptr) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
-inline int Graph::Count(int v) const
-{
-	return bags[v].GetNum();
+inline bool Graph::Connected(int v1, int v2) const {
+  if (bags[v1].Get(v2)) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
-inline bool Graph::Connected(int v) const
-{
-	if (bags[0].Get(v) != nullptr)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+inline int Graph::Degree(int v) const { return bags[v].GetNum(); }
+
+inline int Graph::MaxDegree() const {
+  int max = 0;
+  for (int i = 0; i < V; i++) {
+    int num = bags[i].GetNum();
+    if (num > max) max = num;
+  }
+  return max;
 }
 
-
-inline bool Graph::Connected(int v1, int v2) const
-{
-	if (bags[v1].Get(v2))
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+inline int Graph::SelfLoop() const {
+  int num = 0;
+  for (int i = 0; i < V; i++) {
+    if (bags[i].Get(i)) num++;
+  }
+  return num;
 }
 
-inline int Graph::Degree(int v) const
-{
-	return bags[v].GetNum();
+inline int Graph::DepthFirstSearch(int v) {
+  dfs(v);
+
+  int tmp = count;
+  count = 0;
+  return tmp;
 }
 
-inline int Graph::MaxDegree() const
-{
-	int max = 0;
-	for (int i = 0; i < V; i++)
-	{
-		int num = bags[i].GetNum();
-		if (num > max)
-			max = num;
-	}
-	return max;
+inline void Graph::BreadthFirstSearch(int v) { bfs(v); }
+
+inline void Graph::dfs(int v) {
+  marked[v] = true;
+  count++;
+  Bag* list = Adjs(v);
+  Item* p = list->head->next;
+  auto f = [&]() -> bool { return marked[p->V]; };
+  while (p) {
+    if (!f()) dfs(p->V);
+    p = p->next;
+  }
 }
 
-inline int Graph::SelfLoop() const
-{
-	int num = 0;
-	for (int i = 0; i < V; i++)
-	{
-		if (bags[i].Get(i))
-			num++;
-	}
-	return num;
-}
+inline void Graph::bfs(int v) {
+  Bag* list = Adjs(v);
+  Item* p = list->head;
+  list->head->color = Color::GRAY;
+  std::queue<Item*> dq;
+  dq.push(p);
+  while (!dq.empty()) {
+    Item* paren = dq.front();
+    p = paren->next;
 
-inline int Graph::DepthFirstSearch(int v) 
-{
-	dfs(v);
-	
-	int tmp = count;
-	count = 0;
-	return tmp;
-}
-
-inline void Graph::BreadthFirstSearch(int v)
-{
-		 bfs(v);
-}
-
-inline void Graph::dfs(int v)
-{
-	marked[v] = true;
-	count++;
-	Bag* list = Adjs(v);
-	Item* p = list->head->next;
-	auto f = [&]()->bool { return marked[p->V]; };
-	while (p)
-	{
-		if (!f())
-			dfs(p->V);
-		p = p->next;
-	}
-}
-
-inline void Graph::bfs(int v)
-{
-	Bag* list = Adjs(v);
-	Item* p = list->head;
-	list->head->color = Color::GRAY;
-	std::queue<Item*> dq;
-	dq.push(p);
-	while (!dq.empty())
-	{
-		Item* paren = dq.front();
-		p = paren->next;
-
-		while (p)
-		{
-			p->color = Color::GRAY;
-			p->depth = dq.front()->depth + 1;
-			p->parent = paren;
-			dq.push(p);
-			p = p->next;
-		}
-		dq.pop();
-		paren->color = Color::BLACK;
-	}
+    while (p) {
+      p->color = Color::GRAY;
+      p->depth = dq.front()->depth + 1;
+      p->parent = paren;
+      dq.push(p);
+      p = p->next;
+    }
+    dq.pop();
+    paren->color = Color::BLACK;
+  }
 }

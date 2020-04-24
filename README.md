@@ -15,7 +15,3 @@
 
 1. [string](https://github.com/vlyf/DataStruct/tree/master/string)
 2. [stack](https://github.com/vlyf/DataStructure/tree/master/StackArray)
-
-## LeetCode
-
-[leetcode](https://github.com/vlyf/DataStructure/tree/master/LeetCode)
