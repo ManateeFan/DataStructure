@@ -25,5 +25,4 @@ int binarySearch(const vector<int>& nums, int left, int right, int target)
 }
 int main()
 {
-
 }
